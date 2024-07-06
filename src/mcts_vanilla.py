@@ -45,7 +45,12 @@ def expand_leaf(node: MCTSNode, board: Board, state):
         state: The state associated with that node
 
     """
-    pass
+    action = untried_actions #add to this
+    # state = board.next_state(state, action) ?
+    # node = board.legal.actions(state) ?
+    # node.child_nodes[action] = node ?
+    return node
+    # pass
 
 # Simulation Stage
 # Here we randomly chose legal moves for both opponents until we reach an end state (win, lose, draw)
@@ -61,7 +66,12 @@ def rollout(board: Board, state):
         state: The terminal game state
 
     """
-    pass
+    newState = state
+    while ___: #??
+        action = choice(board.legal_actions(state)) ##??
+        state = board.next_state(state, action)
+    return board.points_value(state)
+    # pass
 
 # Backpropagation Stage
 # This is just walking back up the tree to the root, incrementing the win/play values of each node as it passes by them
@@ -74,7 +84,9 @@ def backpropagate(node: MCTSNode|None, won: bool):
         won:    An indicator of whether the bot won or lost the game.
 
     """
-    pass
+    node.wins += won # ??
+    backpropagate(node.parent, won)
+    # pass
 
 # Upper Confidence Bound (https://en.wikipedia.org/wiki/Thompson_sampling#Upper-Confidence-Bound_(UCB)_Algorithms)
 # Formula for MCTS: w / n + c * sqrt(ln(p) / n)

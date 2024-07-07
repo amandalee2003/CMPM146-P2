@@ -38,11 +38,11 @@ def expand_leaf(node: MCTSNode, board: Board, state):
         state: The state associated with that node
 
     """
-    action = untried_actions #add to this
-    # state = board.next_state(state, action) ?
-    # node = board.legal.actions(state) ?
-    # node.child_nodes[action] = node ?
-    return node
+    action = node.untried_actions #add to this
+    state = board.next_state(state, action)
+    newNode = board.legal.actions(state) # how to add the MCTSNode to this ?
+    node.child_nodes[action] = newNode
+    return newNode
     # pass
 
 
@@ -58,10 +58,10 @@ def rollout(board: Board, state):
 
     """
     newState = state
-    while ___: #??
-        action = choice(board.legal_actions(state)) ##??
-        state = board.next_state(state, action)
-    return board.points_value(state)
+    while not board.is_ended(newState)
+        action = choice(board.legal_actions(newState))
+        state = board.next_state(newState, action)
+    return board.points_value(newState)
     # pass
 
 
@@ -73,8 +73,8 @@ def backpropagate(node: MCTSNode|None, won: bool):
         won:    An indicator of whether the bot won or lost the game.
 
     """
-    node.wins += won # ??
-    backpropagate(node.parent, won)
+    node.wins += won
+    backpropagate(node.parent, won) # account for node.parent not being created yet?
     # pass
 
 def ucb(node: MCTSNode, is_opponent: bool):

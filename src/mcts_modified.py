@@ -23,7 +23,23 @@ def traverse_nodes(node: MCTSNode, board: Board, state, bot_identity: int):
         state: The state associated with that node
 
     """
-    pass
+    opponent = board.current_player(state) != bot_idenity
+    while node is not None and not node.child_nodes and not node.untried_actions:
+        newNode = node
+        newAction = None
+        newScore = float('-inf')
+        child = node.child_nodes
+        opponent = not opponent
+        for action, newChild in child.items()
+            score = ucb(newChild, opponent)
+            if score > newScore:
+                newScore = score
+                newNode = newChild
+                newAction = action
+        node = newNode
+        state = board.next_state(state, newAction)
+    return node, state
+    # pass
 
 def expand_leaf(node: MCTSNode, board: Board, state):
     """ Adds a new leaf to the tree by creating a new child node for the given node (if it is non-terminal).
@@ -74,7 +90,9 @@ def backpropagate(node: MCTSNode|None, won: bool):
 
     """
     node.wins += won
-    backpropagate(node.parent, won) # account for node.parent not being created yet?
+    node.visits += 1
+    if node.parent != None:
+        backpropagate(node.parent, won)
     # pass
 
 def ucb(node: MCTSNode, is_opponent: bool):
@@ -97,7 +115,15 @@ def get_best_action(root_node: MCTSNode):
         action: The best action from the root node
     
     """
-    pass
+    newAction = None
+    newScore = float('-inf')
+    for action, node in root_node.child_nodes.items():
+        score = node.wins  node.visits
+        if score > newScore:
+            newScore = score
+            newAction = action
+    return newAction
+    # pass
 
 def is_win(board: Board, state, identity_of_bot: int):
     # checks if state is a win state for identity_of_bot
@@ -121,9 +147,14 @@ def think(board: Board, current_state):
     for _ in range(num_nodes):
         state = current_state
         node = root_node
-
         # Do MCTS - This is all you!
         # ...
+        newNode, state = traverse_nodes(node, board, current_state, bot_identity)
+        nextNode, nextState = expand_leaf(newNode, board, state)
+        newState = rollout(board, nextState, bot_identity)
+        win = is_win(board, newState, bot_identity)
+        backpropagate(nextNode, win)
+
 
     # Return an action, typically the most frequently used action (from the root) or the action with the best
     # estimated win rate.

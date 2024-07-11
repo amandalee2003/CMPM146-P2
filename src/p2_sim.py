@@ -48,6 +48,7 @@ for i in range(rounds):
         last_action = current_player(board, state)
         state = board.next_state(state, last_action)
         current_player = player1 if current_player == player2 else player2
+        print(board.display(state, last_action))
     print("Finished!")
     print()
     final_score = board.points_values(state)
@@ -58,6 +59,7 @@ for i in range(rounds):
         winner = 2
     print("The %s bot wins this round! (%s)" % (winner, str(final_score)))
     wins[winner] = wins.get(winner, 0) + 1
+    print("Win counts:", dict(wins))
 
 print("")
 print("Final win counts:", dict(wins))

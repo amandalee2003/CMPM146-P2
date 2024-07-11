@@ -3,6 +3,7 @@ from mcts_node import MCTSNode
 from p2_t3 import Board
 from random import choice
 from math import sqrt, log
+import random
 
 num_nodes = 1000
 explore_faction = 2.
@@ -209,6 +210,8 @@ def rollout_policy(board: Board, state):
             score += 3
 
         # print('Final score', score)
+
+        # score += random.uniform(-0.2, 0.2)
         
         heapq.heappush(priority_queue, (score, action))
 
@@ -236,6 +239,10 @@ def rollout(board: Board, state):
         # action = choice(board.legal_actions(tmp_state))
         # print(board.display(tmp_state, None))
         action = rollout_policy(board, tmp_state)
+
+        if random.random() < 0.2:
+            action = choice(board.legal_actions(tmp_state))
+        
         tmp_state = board.next_state(tmp_state, action)
 
     return tmp_state

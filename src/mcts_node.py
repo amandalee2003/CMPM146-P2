@@ -1,7 +1,7 @@
 
 
 class MCTSNode:
-    def __init__(self, state, parent=None, parent_action=None, action_list=[]):
+    def __init__(self, parent=None, parent_action=None, action_list=[]):
         """ Initializes the tree node for MCTS. The node stores links to other nodes in the tree (parent and child
         nodes), as well as keeps track of the number of wins and total simulations that have visited the node.
 
@@ -11,7 +11,6 @@ class MCTSNode:
             action_list:    The list of legal actions to be considered at this node.
 
         """
-        self.state = state
         self.parent = parent                    # Parent node to this node
         self.parent_action = parent_action      # The move that got us to this node - "None" for the root node.
 
